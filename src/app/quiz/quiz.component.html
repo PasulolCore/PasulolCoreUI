@@ -1,0 +1,76 @@
+
+<main class="container" id="quiz-container">
+  <!-- เมนูด้านบน (Back to menu) -->
+  <div class="top-menu-bar" style="
+    width: 100%;
+    background: linear-gradient(90deg, #ffccd5 60%, #fff7f7 100%);
+    box-shadow: 0 2px 12px rgba(178,34,34,0.08);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0 8px 0;
+    border-radius: 0 0 18px 18px;
+    position: relative;
+    z-index: 10;
+    margin-bottom: 18px;
+  ">
+    <a href="index.html" class="back-to-menu-btn" style="
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: #b22222;
+      font-weight: 700;
+      font-size: 1.08rem;
+      border: 2px solid #ffccd5;
+      border-radius: 18px;
+      padding: 7px 20px 7px 16px;
+      text-decoration: none;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      box-shadow: 0 1px 6px rgba(178,34,34,0.06);
+    " onmouseover="this.style.background='#ffe5ea';this.style.color='#8b0000';" onmouseout="this.style.background='transparent';this.style.color='#b22222';">
+      <i class="fas fa-home"></i> กลับหน้าเมนูหลัก
+    </a>
+  </div>
+
+  <section id="test-container">
+    <div id="question-section">
+      <div class="question-header">
+        <h2 id="question-text">{{questions[currentQuestion].question}}</h2>
+      </div>
+      <img id="question-image" class="question-image" alt="ภาพคำถาม" [src]="questions[currentQuestion].image"/>
+      <div id="answer-options" class="answers">
+        <div *ngFor="let answer of questions[currentQuestion].answers; let i = index"
+          class="answer-option"
+          [ngClass]="{'selected': selectedAnswerIndex === i}"
+          (click)="selectAnswer(i)">
+          {{answer.text}}
+        </div>
+      </div>
+    </div>
+
+    <div id="controls">
+      <button id="prev-btn" class="nav-btn" [disabled]="currentQuestion == 0" (click)="prevQuestion();">
+        <i class="fas fa-arrow-left"></i> ย้อนกลับ
+      </button>
+      <button id="next-btn" class="nav-btn" [disabled]="isNextDisabled" (click)="nextQuestion();">
+        ต่อไป <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+
+    <div id="progress-container">
+      <div class="progress-bar">
+        <div id="progress" class="progress" [ngStyle]="{ width: progressPercent }"></div>
+      </div>
+      <span id="progress-text">{{currentQuestion+1}}/{{questionsLength}}</span>
+    </div>
+  </section>
+</main>
+
+<!-- Sound Toggle Button -->
+<button id="soundToggle" class="sound-btn" aria-label="Toggle sound">
+  <i class="fas fa-volume-up"></i>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="audio.js"></script>

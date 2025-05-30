@@ -1,0 +1,17 @@
+.lego-block {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px 8px 6px 6px;
+  box-shadow: 0 2px 8px #b2222230;
+  display: inline-block;
+}
+
+.lego-bounce {
+  animation: lego-bounce 1.3s infinite cubic-bezier(.6,0,.4,1);
+}
+
+@keyframes lego-bounce {
+  0%, 100% { transform: translateY(0);}
+  30% { transform: translateY(-10px);}
+  60% { transform: translateY(0);}
+}
