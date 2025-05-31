@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Result } from '../../share/result.model';
 import { Router } from '@angular/router';
+import { Scores } from '../../share/scores.model';
 
 @Component({
   selector: 'app-quiz',
@@ -13,12 +14,7 @@ import { Router } from '@angular/router';
 export class QuizComponent {
   questions = questions;
   currentQuestion = 0;
-  scores: {
-      [key: string]: any;
-      E: number; I: number; S: number, N: number, T: number; F: number; J: number; P: number;
-      enneagram: { [key: number]: number; 1: number; 2: number; 3: number; 4: number; 5: number; 6: number; 7: number; 8: number; 9: number };
-      headType: number; heartType: number; gutType: number;
-  } = {
+  scores: Scores = {
       // MBTI Scores
       E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0,
       // Enneagram Scores
@@ -128,6 +124,9 @@ export class QuizComponent {
         "enneagram_7": this.scores.enneagram[7],
         "enneagram_8": this.scores.enneagram[8],
         "enneagram_9": this.scores.enneagram[9],
+        "headType": this.scores.headType,
+        "heartType": this.scores.heartType,
+        "gutType": this.scores.gutType
       }
       this.http.post<any>(`${environment.apiUrl}/result/create`, body).subscribe({
         next: (response) => {
@@ -173,7 +172,7 @@ export class QuizComponent {
     console.log("Total Scores:", this.totalScores);
     console.log("Current Scores:", this.scores);
   }
-  
+
   navigateToResult(resultId: string): void {
     this.router.navigate([`/result/${resultId}`]); // Navigate to result page
   }

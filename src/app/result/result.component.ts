@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Result } from '../../share/result.model';
 import { environment } from '../../environments/environment';
+import { Scores } from '../../share/scores.model';
 
 @Component({
   selector: 'app-result',
@@ -12,6 +13,7 @@ import { environment } from '../../environments/environment';
 })
 export class ResultComponent implements OnInit {
   resultId: string | null = null;
+  scores: Scores | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +26,30 @@ export class ResultComponent implements OnInit {
       if (result) {
         // this.displayResult(result);
         console.log('Result loaded:', result);
+        this.scores = {
+          E: result.extroversion,
+          I: result.introversion,
+          S: result.sensing,
+          N: result.intuition,
+          T: result.thinking,
+          F: result.feeling,
+          J: result.judging,
+          P: result.perceiving,
+          enneagram: {
+            1: result.enneagram_1,
+            2: result.enneagram_2,
+            3: result.enneagram_3,
+            4: result.enneagram_4,
+            5: result.enneagram_5,
+            6: result.enneagram_6,
+            7: result.enneagram_7,
+            8: result.enneagram_8,
+            9: result.enneagram_9
+          },
+          headType: result.headType,
+          heartType: result.heartType,
+          gutType: result.gutType
+        }
       } else {
         console.error('Result not found for ID:', this.resultId);
       }
@@ -36,27 +62,27 @@ export class ResultComponent implements OnInit {
 
   //   characters.forEach(character => {
   //       let matchScore = 0;
-        
+
   //       // MBTI Matching
   //       for (const trait of character.mbti) {
   //           matchScore += scores[trait] || 0;
   //       }
-        
+
   //       // Enneagram Matching
   //       matchScore += scores.enneagram[character.coreType] * 2;
-        
+
   //       if (character.tritype) {
   //           for (const type of character.tritype.split('')) {
   //               matchScore += scores.enneagram[parseInt(type)] || 0;
   //           }
   //       }
-        
+
   //       if (matchScore > maxScore) {
   //           maxScore = matchScore;
   //           bestMatch = character;
   //       }
   //   });
-    
+
   //   return bestMatch || characters[0];
   // }
 

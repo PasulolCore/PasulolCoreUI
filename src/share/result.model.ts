@@ -17,4 +17,7 @@ export interface Result {
   enneagram_7: number;
   enneagram_8: number;
   enneagram_9: number;
+  headType: number;
+  heartType: number;
+  gutType: number;
 }
