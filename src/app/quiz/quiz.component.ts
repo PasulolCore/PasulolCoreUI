@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { questions } from './information';
+import { questions } from '../../share/typology';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Result } from '../../share/result.model';
 
 @Component({
   selector: 'app-quiz',
@@ -11,7 +14,7 @@ export class QuizComponent {
   currentQuestion = 0;
   scores: {
       [key: string]: any;
-      E: number; I: number; T: number; F: number; J: number; P: number;
+      E: number; I: number; S: number, N: number, T: number; F: number; J: number; P: number;
       enneagram: { [key: number]: number; 1: number; 2: number; 3: number; 4: number; 5: number; 6: number; 7: number; 8: number; 9: number };
       headType: number; heartType: number; gutType: number;
   } = {
@@ -32,7 +35,9 @@ export class QuizComponent {
   questionsLength = questions.length;
   isNextDisabled = false;
 
-  constructor() {}
+  constructor(
+    private http: HttpClient
+  ) {}
 
   // ฟังก์ชันหลัก
   initializeQuiz() {
@@ -102,9 +107,37 @@ export class QuizComponent {
     if (this.currentQuestion < questions.length) {
         this.displayQuestion();
     } else {
-        console.log(">> แสดงผลลัพธ์");
-        // this.showResults();
-        // TODO: navigate to result page
+      const body: Result = {
+        "accept_email": true,
+        "extroversion": this.scores.E,
+        "introversion": this.scores.I,
+        "sensing": this.scores.S,
+        "intuition": this.scores.N,
+        "thinking": this.scores.T,
+        "feeling": this.scores.F,
+        "judging": this.scores.J,
+        "perceiving": this.scores.P,
+        "enneagram_1": this.scores.enneagram[1],
+        "enneagram_2": this.scores.enneagram[2],
+        "enneagram_3": this.scores.enneagram[3],
+        "enneagram_4": this.scores.enneagram[4],
+        "enneagram_5": this.scores.enneagram[5],
+        "enneagram_6": this.scores.enneagram[6],
+        "enneagram_7": this.scores.enneagram[7],
+        "enneagram_8": this.scores.enneagram[8],
+        "enneagram_9": this.scores.enneagram[9],
+      }
+      this.http.post(`${environment.apiUrl}/result/create`, body).subscribe({
+        next: (response) => {
+          console.log(">> ส่งข้อมูลสำเร็จ:", response);
+        },
+        error: (error) => {
+          console.error(">> เกิดข้อผิดพลาดในการส่งข้อมูล:", error);
+        }
+      })
+      console.log(">> แสดงผลลัพธ์");
+      // this.showResults();
+      // TODO: navigate to result page
     }
   }
 
@@ -134,6 +167,7 @@ export class QuizComponent {
         }
     }
 
-    console.log("Toal Scores:", this.totalScores);
+    console.log("Total Scores:", this.totalScores);
+    console.log("Current Scores:", this.scores);
   }
 }
