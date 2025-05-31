@@ -3,6 +3,7 @@ import { questions } from '../../share/typology';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Result } from '../../share/result.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-quiz',
@@ -36,7 +37,8 @@ export class QuizComponent {
   isNextDisabled = false;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
 
   // ฟังก์ชันหลัก
@@ -127,9 +129,10 @@ export class QuizComponent {
         "enneagram_8": this.scores.enneagram[8],
         "enneagram_9": this.scores.enneagram[9],
       }
-      this.http.post(`${environment.apiUrl}/result/create`, body).subscribe({
+      this.http.post<any>(`${environment.apiUrl}/result/create`, body).subscribe({
         next: (response) => {
           console.log(">> ส่งข้อมูลสำเร็จ:", response);
+          this.navigateToResult(response['id']);
         },
         error: (error) => {
           console.error(">> เกิดข้อผิดพลาดในการส่งข้อมูล:", error);
@@ -169,5 +172,9 @@ export class QuizComponent {
 
     console.log("Total Scores:", this.totalScores);
     console.log("Current Scores:", this.scores);
+  }
+  
+  navigateToResult(resultId: string): void {
+    this.router.navigate([`/result/${resultId}`]); // Navigate to result page
   }
 }
