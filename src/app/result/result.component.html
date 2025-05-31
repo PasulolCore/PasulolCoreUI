@@ -1,33 +1,84 @@
+
 <main class="container" id="quiz-container">
+  <!-- เมนูด้านบน (Back to menu) -->
+  <div class="top-menu-bar" style="
+    width: 100%;
+    background: linear-gradient(90deg, #ffccd5 60%, #fff7f7 100%);
+    box-shadow: 0 2px 12px rgba(178,34,34,0.08);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0 8px 0;
+    border-radius: 0 0 18px 18px;
+    position: relative;
+    z-index: 10;
+    margin-bottom: 18px;
+  ">
+    <a href="index.html" class="back-to-menu-btn" style="
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: #b22222;
+      font-weight: 700;
+      font-size: 1.08rem;
+      border: 2px solid #ffccd5;
+      border-radius: 18px;
+      padding: 7px 20px 7px 16px;
+      text-decoration: none;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      box-shadow: 0 1px 6px rgba(178,34,34,0.06);
+    " onmouseover="this.style.background='#ffe5ea';this.style.color='#8b0000';" onmouseout="this.style.background='transparent';this.style.color='#b22222';">
+      <i class="fas fa-home"></i> กลับหน้าเมนูหลัก
+    </a>
+  </div>
   <!-- Result Section (hidden initially) -->
   <section id="result-container">
     <div class="result-card">
-      <h2>ผลลัพธ์ของคุณ</h2>
+      <h2>ใกล้เคียงตัวคุณ</h2>
       <div class="character-display">
-        <img id="character-image" class="character-image" alt="ตัวละครผลลัพธ์" />
+        <img id="character-image" class="character-image" alt="ตัวละครผลลัพธ์" [src]="'images/characters/' + userCharacter.name.toLowerCase() + 'face.png'"/>
         <div class="character-info">
-          <h3 id="character-name"></h3>
-          <p id="character-traits" class="traits"></p>
+          <h3 id="character-name">{{userCharacter.name}}</h3>
+          <p id="character-traits" class="traits">
+            MBTI: {{userCharacter.mbti}} | Enneagram: {{userCharacter.enneagram}} | Tritype: {{userCharacter.code}}
+          </p>
         </div>
       </div>
-      <div id="character-description" class="description"></div>
+      <div id="character-description" class="description">
+        <p>{{userCharacter.description}}</p>
+        <div class="result-section">
+            <h4>ผลลัพธ์ของคุณ</h4>
+            <p><strong>MBTI Type:</strong> {{userMBTI}}</p>
+            <p><strong>Enneagram Type:</strong> {{userEnneagram.type}} - {{userEnneagram.name}}</p>
+            <p><strong>Tritype:</strong> {{userTritype}}</p>
+        </div>
+      </div>
 
       <div class="related-section">
         <h4><i class="fas fa-users"></i> ตัวละครที่เกี่ยวข้อง</h4>
-        <div id="related-characters" class="related-characters"></div>
+        <div id="related-characters" class="related-characters">
+          <div *ngFor="let relName of userCharacter.relations" class="related-character">
+              <img [src]="'images/characters/' + relName.toLowerCase() + 'face.png'" [alt]="relName">
+              <div class="related-char-info">
+                  <strong>{{relName}}</strong><br>
+                  <small>{{getCharacterByName(relName)?.mbti}} {{getCharacterByName(relName)?.enneagram}}</small>
+              </div>
+          </div>
+        </div>
       </div>
 
       <div class="action-buttons">
-        <button id="restart-btn" class="action-btn">
+        <button id="restart-btn" class="action-btn" (click)="navigateToQuiz()">
           <i class="fas fa-redo"></i> ทำแบบทดสอบอีกครั้ง
         </button>
         <button id="view-other-results-btn" class="action-btn">
           <i class="fas fa-list"></i> ดูผลลัพธ์อื่นๆ
         </button>
-        <button id="support-btn" class="action-btn">
+        <button id="support-btn" class="action-btn" (click)="showSupport();">
           <i class="fas fa-heart"></i> สนับสนุนผู้จัดทำ
         </button>
-        <button id="share-btn" class="action-btn share-btn">
+        <button id="share-btn" class="action-btn share-btn" (click)="showShare()">
           <i class="fas fa-share-alt"></i> แชร์ผลลัพธ์
         </button>
       </div>
@@ -39,5 +90,12 @@
     </div>
   </section>
 
-  <div id="hopfield-result"></div>
+  <!-- <div id="hopfield-result">
+    <div class="hopfield-section">
+      <h4>AI Memory Match (Hopfield Network)</h4>
+      <p>บุคลิกของคุณใกล้เคียงกับ Pattern #{{hopfieldIdx + 1}}</p>
+      <div style="margin-bottom:4px;font-size:0.95em;color:#555;">Heatmap ผลลัพธ์:</div>
+      <div [innerHTML]="renderHopfieldHeatmap(recalled)"></div>
+    </div>
+  </div> -->
 </main>
