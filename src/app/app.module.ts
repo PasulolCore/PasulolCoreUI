@@ -7,13 +7,15 @@ import { IndexComponent } from './index/index.component';
 import { HttpClientModule } from '@angular/common/http';
 import { QuizComponent } from './quiz/quiz.component';
 import { ResultComponent } from './result/result.component';
+import { ResultsComponent } from './results/results.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     IndexComponent,
     QuizComponent,
-    ResultComponent
+    ResultComponent,
+    ResultsComponent
   ],
   imports: [
     BrowserModule,

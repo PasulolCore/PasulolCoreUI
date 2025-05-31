@@ -1,0 +1,73 @@
+<div class="results-nav">
+  <button class="results-btn" id="prevProfile" aria-label="ก่อนหน้า"><i class="fas fa-chevron-left"></i></button>
+  <span id="profile-progress" style="align-self:center;font-size:1.1rem;color:var(--primary-accent);">{{current + 1}} / {{results.length}}</span>
+  <button class="results-btn" id="nextProfile" aria-label="ถัดไป"><i class="fas fa-chevron-right"></i></button>
+  <button class="results-btn" id="randomProfile" aria-label="สุ่ม"><i class="fas fa-random"></i></button>
+</div>
+
+<div id="fav-counter" style="margin-bottom:1.2rem;font-size:1.1rem;color:var(--secondary-accent);"></div>
+
+<div style="
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background: linear-gradient(90deg, #ffccd5 60%, #fff7f7 100%);
+    box-shadow: 0 2px 12px rgba(178,34,34,0.08);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0 8px 0;
+">
+    <a href="index.html" class="back-to-menu-btn" style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: transparent;
+        color: #b22222;
+        font-weight: 700;
+        font-size: 1.08rem;
+        border: 2px solid #ffccd5;
+        border-radius: 18px;
+        padding: 7px 20px 7px 16px;
+        text-decoration: none;
+        transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+        box-shadow: 0 1px 6px rgba(178,34,34,0.06);
+    " onmouseover="this.style.background='#ffe5ea';this.style.color='#8b0000';" onmouseout="this.style.background='transparent';this.style.color='#b22222';">
+        <i class="fas fa-home"></i> กลับหน้าเมนูหลัก
+    </a>
+</div>
+<div style="height:48px"></div>
+<!-- Main Archive Container -->
+<main class="archive-container" id="archive-container">
+    <!-- Character profiles will be rendered here by results.js -->
+    <article *ngFor="let character of results; let i = index;" class="character-profile" [attr.data-idx]="i" style="display:none;">
+      <header class="profile-header" style="position: relative;">
+          <h2 class="character-name">{{character.name}}</h2>
+          <div class="character-rank">
+              <span class="tier-badge">{{character.tier}}</span>
+          </div>
+          <button class="favorite-btn" title="Favorite" style="position: absolute; top: 18px; right: 18px;">
+              <i class="fas fa-heart"></i>
+          </button>
+      </header>
+      <section class="character-visual">
+          <img src="${character.img}" alt="${character.alt}" class="profile-image" loading="lazy" decoding="async">
+      </section>
+      <section class="character-meta">
+          <dl class="attributes-grid">
+            <div *ngFor="let attr of character.attributes" class="attribute-group">
+                <dt>{{attr.label}}</dt>
+                <dd>{{attr.value}}</dd>
+            </div>
+          </dl>
+      </section>
+      <section class="intel-section">
+          <blockquote class="tactical-quote">
+              "{{character.quote}}"
+              <footer>- {{character.quoteBy}}</footer>
+          </blockquote>
+      </section>
+    </article>
+</main>
